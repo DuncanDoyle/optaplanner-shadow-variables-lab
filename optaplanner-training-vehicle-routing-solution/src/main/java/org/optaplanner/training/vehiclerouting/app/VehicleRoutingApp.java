@@ -37,29 +37,24 @@ public class VehicleRoutingApp {
 
     public static void main(String[] args) {
         
-        //Create the SolverFactory
         SolverFactory<TimeWindowedVehicleRoutingSolution> solverFactory = SolverFactory.createFromXmlResource(SOLVER_CONFIG);
         
-        //File inputSolutionFileOne = new File("data/vehiclerouting/unsolved/cvrptw-25customers.xml");
         File inputSolutionFileOne = new File("data/vehiclerouting/unsolved/cvrptw-100customers-A.xml");
         
-        //VehicleRoutingFileIO fileIO = new VehicleRoutingFileIO();
         XStreamSolutionFileIO fileIO = new XStreamSolutionFileIO<>(TimeWindowedVehicleRoutingSolution.class);
         
-
-        //ConferenceSolution problemOne = fileIO.read(inputSolutionFileOne);
         TimeWindowedVehicleRoutingSolution problemOne = (TimeWindowedVehicleRoutingSolution) fileIO.read(inputSolutionFileOne);
         
-        //Create the Solver
         Solver<TimeWindowedVehicleRoutingSolution> solver = solverFactory.buildSolver();
                 
-        //Solve the problem
         TimeWindowedVehicleRoutingSolution solutionOne = solver.solve(problemOne);
-        String scoreExplanation = solver.explainBestScore();
         
-        File outputSolutionFileOne = new File("data/vehiclerouting/solved/18talks-6timeslots-5rooms.xlsx");
+        String scoreExplanation = solver.explainBestScore();
+        LOGGER.debug("Finished solving. Explaining the score:");
+        LOGGER.debug(scoreExplanation);
+        
+        File outputSolutionFileOne = new File("data/vehiclerouting/solved/cvrptw-100customers-A.xml");
         fileIO.write(solutionOne, outputSolutionFileOne);
-    
     }
 
     /*
